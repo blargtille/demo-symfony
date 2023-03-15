@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h1>TEST</h1>
+    {# ma zone de commentaire
+    blablablabla#}
+
+    {%  set nom = 'Laurent' %}
+
+    <h1>{{ nom }}</h1>
+    <b>{{ nom | upper }}</b>
+
+    {% set tableau_couleurs = ["blue", "red", "green", "purple"] %}
+    <div>Il y a {{ tableau_couleurs | length }} couleurs dans mon tableau</div>
+
+    <div>{{ tableau_couleurs | join('-') }}</div>
+
+    {% for c in tableau_couleurs %}
+        <div style="background-color: {{ c }}">{{ c }}</div>
+        <div>{{ loop.index }}</div>
+        <div>{{ loop.last }}</div>
+    {% endfor %}
+
+    {% set film = {
+        title : 'ça',
+        year: 2017,
+        realisateur: 'scorcese'
+    } %}
+    <p>{{ film.title }}</p>
+    {%  for key,val in film %}
+        <div>{{ key }} = {{ val }}</div>
+    {% endfor %}
+
+    {% set actors = [] %}
+
+    {% for a in actors %}
+        <div>{{ a }}</div>
+    {% else %}
+        <div>Pas d'acteurs</div>
+    {% endfor %}
+
+{# filtre sur les dates #}
+    <div>Aujourd'hui nous sommes le {{ "now" | date('d/m/Y') }}</div>
+    <div>Dans un an, nous serons en {{ "+1 year" | date('Y')}}</div>
+    <br>
+    <div>{{ monFilm.title | raw }} {{ autreVariable }}</div>
+
+{% endblock %}
+
+{% block title %}{{ parent() }} | test{% endblock %}
