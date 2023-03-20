@@ -6,6 +6,13 @@
 
 {% block body %}
     <div>
-        todo: formulaire de création de séries
+        {{ form_start(serieForm) }}
+
+        {# affiche tous les champsdu formulaire #}
+        {{ form_widget(serieForm) }}
+
+        <button>Create</button>
+
+        {{ form_end(serieForm) }}
     </div>
 {% endblock %}
