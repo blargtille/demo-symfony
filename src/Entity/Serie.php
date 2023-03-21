@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\SerieRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SerieRepository::class)]
 class Serie
@@ -14,15 +15,22 @@ class Serie
     #[ORM\Column]
     private ?int $id = null;
 
+    /**
+     * @Assert\NotBlank(message="Please provide a title")
+     * @Assert\Length(min="2", max="255",
+     * minMessage="length of title is too short", maxMessage="length of title is too long")
+     * */
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $overview = null;
 
+    #[Assert\Choice(choices: ['Cancelled','Ended','Returning'])]
     #[ORM\Column(length: 50)]
     private ?string $status = null;
 
+    #[Assert\Range(notInRangeMessage: 'You are out of range', min: 0, max: 10)]
     #[ORM\Column(type: Types::DECIMAL, precision: 2, scale: 1)]
     private ?string $vote = null;
 
