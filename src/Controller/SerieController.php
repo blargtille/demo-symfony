@@ -32,14 +32,11 @@ class SerieController extends AbstractController
     }
     #[Route('/details/{id}', name: 'details')]
     public function details(int $id, SerieRepository $serieRepository): Response{
-       //aller chercher la série en BDD
+            //aller chercher la série en BDD
             $serie = $serieRepository->find($id);
-
-            dump($serie);
-            foreach ($serie->getSeasons() as $season){
-                dump($season);
+            if(!$serie){
+                throw $this->createNotFoundException('Serie does not exists');
             }
-            dump($serie);
 
         return $this->render('serie/details.html.twig', [
             'serie' => $serie
@@ -74,6 +71,23 @@ class SerieController extends AbstractController
         return $this->render('/serie/create.html.twig', [
             'serieForm' => $serieForm
         ]);
+    }
+
+    #[Route('/delete/{id}', name: 'delete')]
+    public function delete($id, SerieRepository $serieRepository, EntityManagerInterface $entityManager, Request $request): Response{
+        //aller chercher la série en BDD
+        $serie = $serieRepository->find($id);
+        if($this->isCsrfTokenValid('delete'.$id, $request->get('_token'))){
+            //suppression de toutes les saisons de le série
+            foreach ($serie->getSeasons() as $season){
+                $entityManager->remove($season);
+            }
+            //suppression de la série
+            $entityManager->remove($serie);
+            $entityManager->flush();
+        }
+
+       return $this->redirectToRoute('serie_list');
     }
 
     #[Route('/demo', name: 'demo')]

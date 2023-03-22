@@ -32,5 +32,12 @@
 
     </section>
 
+    <div>
+        <form action="{{ path('serie_delete', {'id': serie.id}) }}">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete'~serie.id) }}">
+            <button>Delete</button>
+        </form>
+    </div>
+
 {% endblock %}
 
