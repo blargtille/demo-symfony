@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Serie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -39,7 +40,7 @@ class SerieRepository extends ServiceEntityRepository
         }
     }
 
-    public function findBestSeries(){
+   /* public function findBestSeries(){
         //recherche des meilleures séries en DQL
         $entityManager = $this->getEntityManager();
 
@@ -54,13 +55,15 @@ class SerieRepository extends ServiceEntityRepository
         $query->setMaxResults(30);
         $result = $query->getResult();
         return $result ;
-    }
+    }*/
 
 
 
-    /*public function findBestSeries()
+    public function findBestSeries()
     {
         $queryBuilder = $this->createQueryBuilder('s');
+        $queryBuilder->leftJoin('s.seasons', 'seas');//left join pour récupérer les séries qui n'ont pas de saisons
+        $queryBuilder->addSelect('seas');
         $queryBuilder->andWhere('s.popularity > 100');
         $queryBuilder->andWhere('s.vote > 8');
         $queryBuilder->addOrderBy('s.popularity', 'DESC');
@@ -68,8 +71,10 @@ class SerieRepository extends ServiceEntityRepository
         $query = $queryBuilder->getQuery();
         $query->setMaxResults(30);
 
-        return $query->getResult();
-    }*/
+        $paginator = new Paginator($query);
+
+        return $paginator;
+    }
 
 //    /**
 //     * @return Serie[] Returns an array of Serie objects

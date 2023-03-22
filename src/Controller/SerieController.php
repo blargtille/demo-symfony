@@ -35,6 +35,12 @@ class SerieController extends AbstractController
        //aller chercher la série en BDD
             $serie = $serieRepository->find($id);
 
+            dump($serie);
+            foreach ($serie->getSeasons() as $season){
+                dump($season);
+            }
+            dump($serie);
+
         return $this->render('serie/details.html.twig', [
             'serie' => $serie
         ]);

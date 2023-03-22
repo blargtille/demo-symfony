@@ -8,6 +8,29 @@
    <h2>{{ serie.name }}</h2>
     <div>{{ serie.overview }}</div>
     <div>{{ serie.vote }}</div>
+    <div>{{ serie.genre }}</div>
+    <div>{{ serie.popularity }}</div>
+    <div>{{ serie.firstAirDate | date('Y-m-d') }}</div>
+
+    <section class="seasons">
+        <h3>Seasons</h3>
+
+        {% for season in serie.seasons %}
+            <article>
+
+                <img src="{{ asset('img/posters/seasons/'~season.poster) }}"
+                alt="{{ serie.name }} season#{{ season.number }}">
+
+                <div>
+                    <h4>{{ season.number }}</h4>
+                    <div>{{ season.overview }}</div>
+                    <div>{{ season.firstAirDate | date('Y-m-d') }}</div>
+                </div>
+
+            </article>
+        {% endfor %}
+
+    </section>
 
 {% endblock %}
 
